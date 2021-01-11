@@ -8,13 +8,14 @@ ADD: '+';
 MINUS: '-';
 MULT: '*';
 DIV: '/';
-ID: [a-z_A-Z_]*[a-z_A-Z_0-9]+;
+ID: [a-z_A-Z_0-9]+;
 WSPACE: [ \t\r] -> skip;
 LPAR: '(';
 RPAR: ')';
+EXP: '^';
 start:
-    ID EQUAL NLINE       #Assign
-    | addSub NLINE? EOF  #Calculate
+    ID EQUAL NLINE        #Assign
+    | addSub NLINE? EOF   #Calculate
     ;
 
 addSub:
@@ -23,13 +24,21 @@ addSub:
     | multDiv               #ToMultiplyorDivide
     ;
 multDiv:
-    multDiv MULT type   #Multiply
-    | multDiv DIV type  #Divide
-    | type              #DataType
+    multDiv MULT type       #Multiply
+    | multDiv DIV type      #Divide
+    | pow                   #Exponent
+    ;
+pow:
+    negative (EXP pow)?    #RaisetoPower
+    ;
+
+negative:
+    MINUS negative         #TimesNegativeOne
+    | type                 #ToDataType
     ;
 type:
-    INT             #Integer
-    | DOUBLE        #Double
-    | ID            #Variable
-    | '(' addSub ')'#Parenthesis
+    INT                 #Integer
+    | DOUBLE            #Double
+    | ID                #Variable
+    | '(' addSub ')'    #Parenthesis
     ;
