@@ -24,8 +24,8 @@ addSub:
     | multDiv               #ToMultiplyorDivide
     ;
 multDiv:
-    multDiv MULT type       #Multiply
-    | multDiv DIV type      #Divide
+    multDiv MULT pow       #Multiply
+    | multDiv DIV pow      #Divide
     | pow                   #Exponent
     ;
 pow:

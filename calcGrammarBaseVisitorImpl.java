@@ -20,14 +20,14 @@ public class calcGrammarBaseVisitorImpl extends calcGrammarBaseVisitor<Double> {
     public Double visitDivide(calcGrammarParser.DivideContext ctx) {
         /**@param two data types matched with / on parsing
          * @return two values divided*/
-        return visit(ctx.multDiv()) / visit(ctx.type());
+        return visit(ctx.multDiv()) / visit(ctx.pow());
     }
 
     @Override
     public Double visitMultiply(calcGrammarParser.MultiplyContext ctx) {
         /**@param two data types matched with * on parsing
          * @return two values multiplied*/
-        return visit(ctx.multDiv()) * visit(ctx.type());
+        return visit(ctx.multDiv()) * visit(ctx.pow());
     }
 
     @Override

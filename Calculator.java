@@ -13,6 +13,9 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -116,7 +119,6 @@ public class Calculator extends Application implements EventHandler<ActionEvent>
         stage.show();
 
     }
-
     @Override
     public void handle(ActionEvent e) {
         /**adds text from buttons pressed and evaluates expression*/
@@ -130,7 +132,7 @@ public class Calculator extends Application implements EventHandler<ActionEvent>
             //if tmp == CLEAR EVERYTHING
             infix.delete(0, infix.length());
             display(infix);
-        } else if (tmp.equals(buttons[19])) {
+        } else if (tmp.equals(buttons[19]) || tmp.equals(KeyEvent.VK_ENTER)) {
             //generating ANTLR lexer, tokens, parser, and evaluating expression
             CharStream input = CharStreams.fromString(expression);
             calcGrammarLexer lexer = new calcGrammarLexer(input);
@@ -151,4 +153,6 @@ public class Calculator extends Application implements EventHandler<ActionEvent>
         text.setText(String.valueOf(s));
     }
 }
+
+
 
