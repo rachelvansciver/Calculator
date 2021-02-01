@@ -140,7 +140,6 @@ public class Calculator extends Application implements EventHandler<ActionEvent>
         /**@param object mapped to button
          *adds text from button to expression to be evaluated*/
         expression = text.getText().trim();
-        System.out.println(expression);
         if (tmp.equals(buttons[17])) {
             //if tmp == CLEAR
             infix.deleteCharAt(infix.length()-1);
