@@ -7,21 +7,22 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-
-import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.HashMap;
 
 public class Calculator extends Application implements EventHandler<ActionEvent> {
     static TextField text = new TextField();
     //displays expression
+    String expression;
+    //expression to be parsed
     static StringBuilder infix = new StringBuilder();
     //string for manipulating expressions
     static Button[] buttons = {
@@ -58,9 +59,20 @@ public class Calculator extends Application implements EventHandler<ActionEvent>
         buttonMap.put(buttons[19], "=");
         launch(args);
     }
-
     @Override
     public void start(Stage stage) throws Exception {
+        text.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.ENTER) {
+                    //calculate if enter key is pressed.
+                    calculate(text.getText());
+                    text.positionCaret((text.getLength() + 1));
+                    //moves cursor to position after the result
+
+                }
+            }
+        });
         for(Button i: buttons){
             //adding handler and style options
             i.setOnAction(e -> {
@@ -117,13 +129,18 @@ public class Calculator extends Application implements EventHandler<ActionEvent>
         stage.setScene(scene);
         stage.setTitle("Calculator");
         stage.show();
-
     }
     @Override
     public void handle(ActionEvent e) {
         /**adds text from buttons pressed and evaluates expression*/
         Object tmp = e.getSource();
-        String expression = text.getText();
+        addText(tmp);
+    }
+    public void addText(Object tmp){
+        /**@param object mapped to button
+         *adds text from button to expression to be evaluated*/
+        expression = text.getText().trim();
+        System.out.println(expression);
         if (tmp.equals(buttons[17])) {
             //if tmp == CLEAR
             infix.deleteCharAt(infix.length()-1);
@@ -132,25 +149,31 @@ public class Calculator extends Application implements EventHandler<ActionEvent>
             //if tmp == CLEAR EVERYTHING
             infix.delete(0, infix.length());
             display(infix);
-        } else if (tmp.equals(buttons[19]) || tmp.equals(KeyEvent.VK_ENTER)) {
+        } else if (tmp.equals(buttons[19])) {
             //generating ANTLR lexer, tokens, parser, and evaluating expression
-            CharStream input = CharStreams.fromString(expression);
-            calcGrammarLexer lexer = new calcGrammarLexer(input);
-            CommonTokenStream tokens = new CommonTokenStream(lexer);
-            calcGrammarParser parser = new calcGrammarParser(tokens);
-            ParseTree tree = parser.start();
-            calcGrammarBaseVisitorImpl impl = new calcGrammarBaseVisitorImpl();
-            Double result = impl.visit(tree);
-            infix.delete(0,infix.length());
-            infix.append(String.valueOf(result));
-            display(infix);
+            calculate(expression);
         } else {
             infix.append(buttonMap.get(tmp));
             display(infix);
         }
     }
     public void display(StringBuilder s){
+        /**sets expression in the textfield*/
         text.setText(String.valueOf(s));
+    }
+    public void calculate(String s){
+        /**@param user generated expression
+         * evaluates expression with ANTLR generated files*/
+        CharStream input = CharStreams.fromString(s);
+        calcGrammarLexer lexer = new calcGrammarLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        calcGrammarParser parser = new calcGrammarParser(tokens);
+        ParseTree tree = parser.start();
+        calcGrammarBaseVisitorImpl impl = new calcGrammarBaseVisitorImpl();
+        Double result = impl.visit(tree);
+        infix.delete(0,infix.length());
+        infix.append(String.valueOf(result));
+        display(infix);
     }
 }
 

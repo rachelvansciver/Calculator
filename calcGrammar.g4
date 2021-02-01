@@ -26,15 +26,15 @@ addSub:
 multDiv:
     multDiv MULT pow       #Multiply
     | multDiv DIV pow      #Divide
-    | pow                   #Exponent
+    | pow                  #Exponent
     ;
 pow:
     negative (EXP pow)?    #RaisetoPower
     ;
 
 negative:
-    MINUS negative         #TimesNegativeOne
-    | type                 #ToDataType
+    MINUS negative  #TimesNegativeOne
+    | type          #ToDataType
     ;
 type:
     INT                 #Integer
