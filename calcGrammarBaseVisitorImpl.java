@@ -8,35 +8,30 @@ public class calcGrammarBaseVisitorImpl extends calcGrammarBaseVisitor<Double> {
          * @returns two values added together*/
         return visit(ctx.addSub()) + visit(ctx.multDiv());
     }
-
     @Override
     public Double visitSubtract(calcGrammarParser.SubtractContext ctx) {
         /**param two data types matched with - on parsing
          * @returns two values subtracted together*/
         return visit(ctx.addSub()) - visit(ctx.multDiv());
     }
-
     @Override
     public Double visitDivide(calcGrammarParser.DivideContext ctx) {
         /**@param two data types matched with / on parsing
          * @return two values divided*/
         return visit(ctx.multDiv()) / visit(ctx.pow());
     }
-
     @Override
     public Double visitMultiply(calcGrammarParser.MultiplyContext ctx) {
         /**@param two data types matched with * on parsing
          * @return two values multiplied*/
         return visit(ctx.multDiv()) * visit(ctx.pow());
     }
-
     @Override
     public Double visitInteger(calcGrammarParser.IntegerContext ctx) {
         /**@param data matched to an integer data type
          * @return data parsed as an integer, wrapped as a double for simplicity*/
         return Double.parseDouble(String.valueOf(ctx.INT()));
     }
-
     @Override
     public Double visitDouble(calcGrammarParser.DoubleContext ctx) {
         /**@param data matched as a double data type
@@ -49,7 +44,6 @@ public class calcGrammarBaseVisitorImpl extends calcGrammarBaseVisitor<Double> {
          * @returns parsed expression*/
         return visit(ctx.addSub());
     }
-
     @Override
     public Double visitRaisetoPower(calcGrammarParser.RaisetoPowerContext ctx) {
         /**@param expression matched with power sign
@@ -59,7 +53,6 @@ public class calcGrammarBaseVisitorImpl extends calcGrammarBaseVisitor<Double> {
             return Math.pow(visit(ctx.negative()), visit(ctx.pow()));
         return visit(ctx.negative());
     }
-
     @Override
     public Double visitTimesNegativeOne(calcGrammarParser.TimesNegativeOneContext ctx) {
         /**@param expression matched with unary minus
@@ -74,5 +67,4 @@ public class calcGrammarBaseVisitorImpl extends calcGrammarBaseVisitor<Double> {
          */
         return visit(ctx.addSub());
     }
-
 }
