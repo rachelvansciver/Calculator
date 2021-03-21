@@ -1,4 +1,4 @@
-# I found ANTLR to be a bit confusing for a newbie, and here is my explanation of how I got it work in IntelliJ 2020.3.
+# I found [ANTLR](https://www.antlr.org/) to be a bit confusing for a newbie, and here is my explanation of how I got it work in IntelliJ 2020.3.
 ## Installing ANTLR
 Open IntelliJ, navigate to plugins, install antlr4. Restart IDE. 
 ## Add ANTLR JAR to modules
